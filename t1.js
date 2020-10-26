@@ -141,7 +141,39 @@ function smilesProblem(text) {
  * @returns {'x' | 'o' | 'draw'} Результат игры
  */
 function ticTacToeProblem(field) {
-    // Ваше решение
+    if (pretendentWinner('x'))
+        return 'x';
+    else if (pretendentWinner('o'))
+        return 'o';
+    else
+        return 'draw';
+
+    function pretendentWinner(pretendent) {
+        if (isRowWinner(field, pretendent) ||
+            isRowWinner(matrixProblem(field), pretendent) ||
+            isDiagonalWinner(field, pretendent))
+            return true;
+        return false;
+    }
+    
+    /** @param {'x' | 'o'} pr pretendent*/
+    function isDiagonalWinner(field, pr) {
+        if ((field[0][0] === pr && field[1][1] === pr && field[2][2] === pr) ||
+            (field[0][2] === pr && field[1][1] === pr && field[2][0] === pr))
+            return true;
+        return false;
+    }
+
+    function isRowWinner(field, pretendent) {
+        for (let row of field)
+            if (isWinRaw(row, pretendent))
+                return true;
+        return false;
+    }
+
+    function isWinRaw(row, pretendent) {
+        return row[0] === pretendent && row[1] === pretendent && row[2] === pretendent;
+    }
 }
 
 module.exports = {
