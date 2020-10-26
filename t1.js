@@ -8,7 +8,7 @@
  * @returns {Number} Сумма аргументов
  */
 function abProblem(a, b) {
-    if (!Number.isInteger(a) && Number.isInteger(b))
+    if (!Number.isInteger(a) || !Number.isInteger(b))
         throw new TypeError();
     return a + b;
 }
@@ -21,7 +21,7 @@ function abProblem(a, b) {
  * @returns {Number} Век, полученный из года
  */
 function centuryByYearProblem(year) {
-    if (!Number.isInteger(year))
+    if (typeof(year) !== 'number' || !Number.isInteger(year))
         throw new TypeError();
     if (year < 0)
         throw new RangeError();
@@ -40,7 +40,7 @@ function colorsProblem(hexColor) {
     if (typeof (hexColor) !== 'string')
         throw new TypeError();
     hexColor = hexColor.toLowerCase();
-    if (hexColor > '#ffffff')
+    if (!/^#([0-9a-f]{6}|[0-9a-f]{3})$/.test(hexColor))
         throw new RangeError();
     let r = parseInt(hexColor.slice(1, 3), 16);
     let g = parseInt(hexColor.slice(3, 5), 16);
@@ -102,9 +102,9 @@ function matrixProblem(matrix) {
  * @returns {String} Число n в системе счисления targetNs
  */
 function numberSystemProblem(n, targetNs) {
-    if (!Number.isInteger(n) || !Number.isInteger(targetNs))
+    if (typeof(n) !== 'number' || !Number.isInteger(targetNs))
         throw new TypeError();
-    if (targetNs < 2 && targetNs > 36)
+    if (targetNs < 2 || targetNs > 36)
         throw new RangeError();
     return n.toString(targetNs);
 }
@@ -118,7 +118,7 @@ function numberSystemProblem(n, targetNs) {
 function phoneProblem(phoneNumber) {
     if (typeof (phoneNumber) !== 'string')
         throw new TypeError();
-    let regexp = /(8-800-)\d?\d?\d?-\d?\d?-\d?\d?/;
+    let regexp = /^(8-800-\d\d\d-\d\d-\d\d)$/;
     return regexp.test(phoneNumber);
 }
 
@@ -131,7 +131,7 @@ function phoneProblem(phoneNumber) {
 function smilesProblem(text) {
     if (typeof (text) !== 'string')
         throw new TypeError();
-    return text.split(/\:\-\)/).length - 1;
+    return text.split(/\:-\)|\(-\:/).length - 1;
 }
 
 /**
