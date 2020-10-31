@@ -23,4 +23,24 @@ function run(query) {
     return [];
 }
 
+function createContact(name) {
+    if (!phoneBook.has(name))
+        phoneBook.set(name, { 'ph': new Set(), 'ml': new Set()});
+}
+
+function deleteContact(name) {
+    if (phoneBook.has(name))
+        phoneBook.delete(name);
+}
+
+function addPhone(name, phone) {
+    if (phoneBook.has(name))
+        phoneBook.get(name)['ph'].add(phone);
+}
+
+function addMail(name, mail) {
+    if (phoneBook.has(name))
+        phoneBook.get(name)['ml'].add(mail);
+}
+
 module.exports = { phoneBook, run };
