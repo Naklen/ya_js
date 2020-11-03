@@ -90,7 +90,7 @@ function run(query) {
                 state = 'query';
                 curIndex = query.indexOf(';', startIndex);                
                 if (curIndex === -1) {                    
-                    syntaxError(curCommand, query.length - query.indexOf(';', startIndex));
+                    syntaxError(curCommand, query.length - operationStart + 1);
                 }                
                 break;
             case ';':                
@@ -105,7 +105,7 @@ function run(query) {
                 if (!transitions[oldState].includes(state))
                     throwSE(curCommand, startIndex, query);
                 break;
-        } 
+        }
         switch (state) {
             case 'Создай':
                 operation = 'cr';
@@ -176,7 +176,8 @@ function exec(operation, params) {
     let q;
     switch (operation) {
         case 'cr':
-            createContact(params['name']);
+            if (params['name'] !== '')
+                createContact(params['name']);
             break;        
         case 'add':
             name = params['name'];
@@ -203,12 +204,14 @@ function exec(operation, params) {
                     if (k.includes(q))
                         deleteContact(k);
                     else {
-                        for (let ph of phoneBook.get(k)['ph'])
-                            if (ph.includes(q))
-                                deleteContact(k);
-                        for (let ml of phoneBook.get(k)['ml'])
-                            if (ml.includes(q))
-                                deleteContact(k);
+                        if (phoneBook.has(k))
+                            for (let ph of phoneBook.get(k)['ph'])
+                                if (ph.includes(q))
+                                    deleteContact(k);
+                        if (phoneBook.has(k))
+                            for (let ml of phoneBook.get(k)['ml'])
+                                if (ml.includes(q))
+                                    deleteContact(k);
                     }
                 }
             }
